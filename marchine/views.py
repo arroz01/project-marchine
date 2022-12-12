@@ -75,10 +75,10 @@ def createmarchine(request):
         else:
             acao = False
         Marchine.objects.create(valor=valor, acao=acao)
-        # messages.success(request, 'Data saved successfully!')
+        messages.success(request, 'Data saved successfully!')
         return redirect('marchine:home')
     else:
-        # messages.error(request, 'Data not saved!')
+        messages.error(request, 'Data not saved!')
         return redirect(reverse('marchine:home'))
 
 
@@ -95,10 +95,10 @@ def editmarchine(request):
         else:
             marchineedit.acao = False
         marchineedit.save()
-        # messages.success(request, 'Data saved successfully!')
+        messages.success(request, 'Data saved successfully!')
         return redirect('marchine:home')
     else:
-        # messages.error(request, 'Data not saved!')
+        messages.error(request, 'Data not saved!')
         return redirect(reverse('marchine:home'))
 
 
@@ -111,5 +111,5 @@ def deletemarchine(request):
     marchinedelete = get_object_or_404(Marchine, id=id)
 
     marchinedelete.delete()
-    # messages.success(request, 'Data successfully deleted!')
+    messages.success(request, 'Data successfully deleted!')
     return redirect(reverse('marchine:home'))
