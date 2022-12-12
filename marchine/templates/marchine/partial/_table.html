@@ -1,4 +1,16 @@
-<div class="">
+<div class="row">
+    <form class="row row-cols-sm-2" action="">
+        <label >Data Inicial</label>
+        <input  name="start_date" class="form-control" type="date">    
+
+        <label >Data Final</label>
+        <input name="end_date" class="form-control" type="date">
+
+        <button type="submit"> Enviar</button>
+        <a href={% url 'marchine:home' %}>Limpar</a>
+    </form>
+</div>
+<div>
     <table class="table table-dark table-striped">
         <thead>
             <tr>

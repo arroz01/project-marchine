@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.db.models import Sum
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from parse import parse
 
 from .models import Marchine
 
@@ -12,6 +15,20 @@ from .models import Marchine
 def home(request):
     template = 'marchine/pages/home.html'
     dadosmarchines = Marchine.objects.all().order_by('-data_criacao')
+    search = request.GET.get('search')
+    if search:
+        dadosmarchines = dadosmarchines.filter(
+            data_criacao__icontains=search
+        )
+
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    if start_date and end_date:
+        end_date = parse(end_date) + timedelta(days=1)
+        dadosmarchines = dadosmarchines.filter(
+            data_criacao__range=[start_date, end_date]
+        )
+
     # calcula o total diario
     ValordiarioEntrada = Marchine.objects.all().filter(
         acao=True, data_criacao__day=timezone.now().day).aggregate(Sum('valor'))  # noqa
