@@ -12,18 +12,52 @@ from .models import Marchine
 def home(request):
     template = 'marchine/pages/home.html'
     dadosmarchines = Marchine.objects.all().order_by('-data_criacao')
-    SumMarchineEntrada = Marchine.objects.all().filter(
-        acao=True).aggregate(Sum('valor'))
+    # calcula o total diario
+    ValordiarioEntrada = Marchine.objects.all().filter(
+        acao=True, data_criacao__day=timezone.now().day).aggregate(Sum('valor'))  # noqa
+    if ValordiarioEntrada['valor__sum'] is None:
+        ValordiarioEntrada['valor__sum'] = 0
 
-    SumMarchineSaida = Marchine.objects.all().filter(
-        acao=False).aggregate(Sum('valor'))
+    ValordiarioSaida = Marchine.objects.all().filter(
+        acao=False, data_criacao__day=timezone.now().day).aggregate(Sum('valor'))  # noqa
+    if ValordiarioSaida['valor__sum'] is None:
+        ValordiarioSaida['valor__sum'] = 0
 
-    total = SumMarchineEntrada['valor__sum'] - SumMarchineSaida['valor__sum']
-    print(total)
+    TotalDiario = ValordiarioEntrada['valor__sum'] -\
+        ValordiarioSaida['valor__sum']
+
+    # calcula o total mensal
+    ValorMensalEntrada = Marchine.objects.all().filter(
+        acao=True, data_criacao__month=timezone.now().month).aggregate(Sum('valor'))  # noqa
+    if ValorMensalEntrada['valor__sum'] is None:
+        ValorMensalEntrada['valor__sum'] = 0
+    ValorMensalSaida = Marchine.objects.all().filter(
+        acao=False, data_criacao__month=timezone.now().month).aggregate(Sum('valor'))  # noqa
+    if ValorMensalSaida['valor__sum'] is None:
+        ValorMensalSaida['valor__sum'] = 0
+
+    TotalMensal = ValorMensalEntrada['valor__sum'] - \
+        ValorMensalSaida['valor__sum']
+
+    # calcula o total anual
+    ValorAnualEntrada = Marchine.objects.all().filter(
+        acao=True, data_criacao__year=timezone.now().year).aggregate(Sum('valor'))  # noqa
+    if ValorAnualEntrada['valor__sum'] is None:
+        ValorAnualEntrada['valor__sum'] = 0
+
+    ValorAnualSaida = Marchine.objects.all().filter(
+        acao=False, data_criacao__year=timezone.now().year).aggregate(Sum('valor'))  # noqa
+    if ValorAnualSaida['valor__sum'] is None:
+        ValorAnualSaida['valor__sum'] = 0
+
+    TotalAnual = ValorAnualEntrada['valor__sum'] - \
+        ValorAnualSaida['valor__sum']
 
     contexto = {
         'dadosmarchines': dadosmarchines,
-        'total': total,
+        'TotalDiario': TotalDiario,
+        'TotalMensal': TotalMensal,
+        'TotalAnual': TotalAnual,
 
     }
 

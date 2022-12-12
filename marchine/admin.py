@@ -9,6 +9,7 @@ class MarchineAdmin(admin.ModelAdmin):
     list_filter = ('acao', 'data_criacao')
     search_fields = ('acao', 'data_criacao')
     ordering = ('-data_criacao',)
+    list_editable = ('acao', 'data_criacao')
 
 
 admin.site.register(Marchine, MarchineAdmin)
