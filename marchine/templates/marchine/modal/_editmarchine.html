@@ -5,7 +5,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="editModalLabel">Edit {{ dadosmarchine.valor }}</h1>
+        <h1 class="modal-title fs-5" id="editModalLabel">Editar {{ dadosmarchine.valor }} reais</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action={% url 'marchine:editmarchine' %} method="POST">
@@ -27,8 +27,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-warning">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-warning">Salvar</button>
         </div>
       </form>
     </div>

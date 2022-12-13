@@ -15,20 +15,7 @@ from .models import Marchine
 def home(request):
     template = 'marchine/pages/home.html'
     dadosmarchines = Marchine.objects.all().order_by('-data_criacao')
-    search = request.GET.get('search')
-    if search:
-        dadosmarchines = dadosmarchines.filter(
-            data_criacao__icontains=search
-        )
-
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-    if start_date and end_date:
-        end_date = parse(end_date) + timedelta(days=1)
-        dadosmarchines = dadosmarchines.filter(
-            data_criacao__range=[start_date, end_date]
-        )
-
+\
     # calcula o total diario
     ValordiarioEntrada = Marchine.objects.all().filter(
         acao=True, data_criacao__day=timezone.now().day).aggregate(Sum('valor'))  # noqa
